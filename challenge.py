@@ -26,7 +26,7 @@ def word_pick(wordlist):
 
     return list_word, word
 
-#function that updates the spaces displayed with correct letters
+#function that intakes a guess and updates the state of the game based on the correctness
 def guess_input(array, counter, answer, wrong_guesses, correct_counter, incorrect_counter):
     original_list = array.copy()
     a = -1
@@ -46,19 +46,15 @@ def guess_input(array, counter, answer, wrong_guesses, correct_counter, incorrec
 
     return counter, correct_counter, incorrect_counter
 
-#function that displays the number of guesses and how many have been correct & incorrect
-
-#create a try again? function
-    #if yes then restart game
-    #if no then end the program
-
 def game_start():
+    #allows the game to be started again or quit
     play = 1
     while play == 1:
         #list of possible words
         possible_words = ["COMPUTER", "PYTHON", "BYU", "HANGMAN", "INCORRECT", "CORRECT", "INFORMATION", "PRACTICE", "CHALLENGE", "WINNER"]
         #the variable for the word
         word_to_guess, word = word_pick(possible_words)
+        #lists and counters that will update as the functions are called
         counter = 0
         interface_word = []
         letter_count = 0
@@ -74,10 +70,12 @@ def game_start():
         #interates through each round until win or lose
         while counter < 6:
             print_hangman(counter, letter_count)
+            #converts the list into a string for the terminal to display
             final_string = ""
             for item in interface_word:
                 final_string += item
             print(final_string)
+            #converts the list into a string as well
             wrong_string = ""
             for item in incorrect_guesses:
                 wrong_string += item
@@ -85,16 +83,19 @@ def game_start():
             print(f'Number of guesses: {guess_counter} | Number of correct: {correct_number} | Number of incorrect: {incorrect_number}')
             counter, correct_number, incorrect_number = guess_input(interface_word, counter, word_to_guess, incorrect_guesses, correct_number, incorrect_number)
             guess_counter += 1
+        #win condition
         if counter == 7:
             print(f'You won! The word was {word}. It took you {guess_counter} guesses.')
+        #lose condition
         else:
             print_hangman(counter, letter_count)
             print(f'GAME OVER! The word was {word}.')
+        #do you want to play again?
         again = input("Would you like to play again? Y or N \n")
         again_final = again.upper()
         if again_final == "N":
             print("Bye, bye!")
             play = 2
 
-#main function here
-game_start()
+if __name__ == "__main__":
+    game_start()
